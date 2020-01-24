@@ -7,6 +7,6 @@ namespace Zima.Models
         public string Name { get; set; }
         public string Version { get; set; }
         public long UploadDate { get; set; }
-        public List<string> Denpendencies { get; set; }
+        public List<string> Dependencies { get; set; }
     }
 }

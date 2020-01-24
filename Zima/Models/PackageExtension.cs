@@ -10,7 +10,7 @@ namespace Zima.Models
         public static Package ToModel(this Packet packet)
         {
             var p = new Package() { Name = packet.Project.Name, Version = packet.Version, UploadDate = packet.UploadDate };
-            p.Denpendencies = packet.Dependencies?.Split(':').ToList();
+            p.Dependencies = packet.Dependencies?.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList();
             return p;
         }
 

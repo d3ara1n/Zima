@@ -43,7 +43,7 @@ namespace Zima.Data
                 return false;
             }
             Packet packet = new Packet() { Version = package.Version, UploadDate = package.UploadDate };
-            packet.Dependencies = string.Join(';', package.Denpendencies);
+            packet.Dependencies = package.Dependencies == null ? "" : string.Join(';', package.Dependencies);
             project.Versions.Add(packet);
             _context.Add(packet);
             _context.SaveChanges();

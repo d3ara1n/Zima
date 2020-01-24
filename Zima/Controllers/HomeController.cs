@@ -59,8 +59,8 @@ namespace Zima.Controllers
             }
         }
 
-        [HttpGet("info/{name}")]
-        public ActionResult<Package> Info(string name)
+        [HttpGet("inspect/{name}")]
+        public ActionResult<Package> Inspect(string name)
         {
             var res = _packetRepository.FindLatest(name);
             if (res != null)
@@ -73,8 +73,8 @@ namespace Zima.Controllers
             }
         }
 
-        [HttpGet("info/{name}/{version}")]
-        public ActionResult<Package> InfoByVersion(string name, string version)
+        [HttpGet("inspect/{name}/{version}")]
+        public ActionResult<Package> InspectByVersion(string name, string version)
         {
             var res = _packetRepository.Find(name, version);
             if (res != null)
@@ -134,6 +134,7 @@ namespace Zima.Controllers
                         {
                             using (FileStream fs = new FileStream(model.Locate(), FileMode.Create, FileAccess.Write))
                             {
+                                stream.Position = 0;
                                 stream.CopyTo(fs);
                             }
                             return Ok(model);
@@ -148,7 +149,7 @@ namespace Zima.Controllers
                 {
                     return Unauthorized();
                 }
-                catch (JsonException e)
+                catch (JsonException)
                 {
                     return StatusCode(500);
                 }
