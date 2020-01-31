@@ -2,9 +2,8 @@
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
-ENV ASPNETCORE_URLS http://localhost:927;https://localhost:928
+ENV ASPNETCORE_URLS http://*:927
 EXPOSE 927
-EXPOSE 928
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src

@@ -145,7 +145,7 @@ namespace Zima.Controllers
                         }
                     }
                 }
-                catch (WebException e)
+                catch (WebException)
                 {
                     return Unauthorized();
                 }

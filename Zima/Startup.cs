@@ -24,7 +24,7 @@ namespace Zima
             services.AddControllers();
             services.AddDbContext<ApplicationDbContext>(options => options.UseLazyLoadingProxies().UseMySql(connectionString));
             //services.AddEntityFrameworkMySql();
-            services.AddTransient<PacketRepository>();
+            services.AddScoped<PacketRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,7 +43,7 @@ namespace Zima
 
             app.UseStatusCodePages();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
