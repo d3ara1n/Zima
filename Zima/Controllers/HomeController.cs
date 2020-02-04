@@ -10,6 +10,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Zima.Data;
 using Zima.Models;
 
@@ -101,7 +102,7 @@ namespace Zima.Controllers
 
         [HttpPost("publish")]
         [RequestSizeLimit(64 * 1024 * 1024)]
-        public ActionResult<Package> Publish([FromQuery]string key)
+        public async Task<ActionResult<Package>> PublishAsync([FromQuery]string key)
         {
             string op;
             using (WebClient wc = new WebClient())
@@ -120,12 +121,7 @@ namespace Zima.Controllers
                     }
                     using (MemoryStream stream = new MemoryStream())
                     {
-                        var syncIOFeature = HttpContext.Features.Get<IHttpBodyControlFeature>();
-                        if (syncIOFeature != null)
-                        {
-                            syncIOFeature.AllowSynchronousIO = true;
-                        }
-                        Request.Body.CopyTo(stream);
+                        await Request.Body.CopyToAsync(stream);
                         ZipArchive zip = new ZipArchive(stream);
                         StreamReader reader = new StreamReader(zip.GetEntry("package.json").Open());
                         Package model = JsonConvert.DeserializeObject<Package>(reader.ReadToEnd());
@@ -135,7 +131,7 @@ namespace Zima.Controllers
                             using (FileStream fs = new FileStream(model.Locate(), FileMode.Create, FileAccess.Write))
                             {
                                 stream.Position = 0;
-                                stream.CopyTo(fs);
+                                await stream.CopyToAsync(fs);
                             }
                             return Ok(model);
                         }
